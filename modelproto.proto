@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+message CategorySmallProto {
+    int32 id = 1;
+    string name = 2;
+}
+
+
+message TensorProto {
+    int32 category_id = 1;
+    int32 word_id = 2;
+    double weight = 3;
+}
+
+message ModelProto {
+    repeated TensorProto tensors = 1;
+    repeated VocabProto vocab = 2;
+    repeated CategorySmallProto categories = 3;
+    WordVectorProto vectors = 4;
+}
+
+message VocabProto {
+    string word = 1;
+    string word_partial = 2;
+    int32 count = 3;
+}
+
+message WordVectorProto {
+    repeated EmbeddingProto embeddings = 1;
+}
+
+message EmbeddingProto {
+    repeated int32 values = 1;
+}
