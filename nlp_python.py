@@ -562,7 +562,7 @@ class Classify:
                     if category:
                         index = next((i for i, r in enumerate(results) if r['category'] == category), -1)
                         if index > -1:
-                            results[index]['weight'] += (t.weight > self.dropout and t.weight or 0)  # Simplified conditional
+                            results[index]['weight'] += (t.weight > self.dropout and t.weight or 0) + ( results[index]['category_count'] + len(tokens))  # Simplified conditional
                             results[index]['category_count'] += 1
                         else:
                             results.append({'category_id': t.category_id, 'category': category, 'weight': (t.weight > self.dropout and t.weight or 0), 'category_count': 1, 'input_token_count': len(tokens)})
@@ -664,7 +664,7 @@ class Classify:
                 near_distance = abs(near_position - index_cat)
                 if near_distance == 0:
                     near_distance = 10000
-                _alpha += 1.0 / near_distance
+                _alpha += 1.0 / (near_distance ** 0.5)
         return _alpha / (len(intersect_tokens) + 1)
 
 
