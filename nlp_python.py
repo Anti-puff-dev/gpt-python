@@ -562,8 +562,8 @@ class Classify:
                     if category:
                         index = next((i for i, r in enumerate(results) if r['category'] == category), -1)
                         if index > -1:
-                            results[index]['weight'] += (t.weight > self.dropout and t.weight or 0) + ( results[index]['category_count'] + len(tokens))  # Simplified conditional
                             results[index]['category_count'] += 1
+                            results[index]['weight'] += (t.weight > self.dropout and t.weight or 0) + ( results[index]['category_count'] + len(tokens))  # Simplified conditional
                         else:
                             results.append({'category_id': t.category_id, 'category': category, 'weight': (t.weight > self.dropout and t.weight or 0), 'category_count': 1, 'input_token_count': len(tokens)})
 
