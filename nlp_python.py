@@ -1250,7 +1250,7 @@ class Seq2Seq:
                 near_distance = abs(near_position - index_cat)
                 if near_distance == 0:
                     near_distance = 10000
-                _alpha += (1.0 / near_distance)
+                _alpha += 1.0 / (near_distance ** 0.5)
         return _alpha / (len(intersect_tokens) + 1)
 
     def alpha_minor_distance_position(self, position: List[int], ids: List[int]) -> int:
