@@ -367,7 +367,7 @@ class Classify:
         self.dropout = 0.0001
         self.classes_number = 3
         self.non_category_threshold = 0.05
-        self.distance_temperature = 1
+        self.distance_temperature = 1.0
         
         self.categories = categories or []
         self.tensors = tensors or []
@@ -670,7 +670,7 @@ class Classify:
                 near_distance = abs(near_position - index_cat)
                 if near_distance == 0:
                     near_distance = 10000
-                _alpha += 1.0 / (near_distance ** 0.5)
+                _alpha += 1.0 / (near_distance ** self.distance_temperature)
         return _alpha / (len(intersect_tokens) + 1)
 
 
@@ -1047,6 +1047,7 @@ genai.qna("a neoplasia maligna da glote é um tipo de câncer", True)
 class Seq2Seq:
     def __init__(self, model_path = None, vocab = None, categories = None, tensors = None, vectors = None):
         self.word_pooling = 1.0
+        self.distance_temperature = 1.0
         self.model_path = model_path if model_path else ""
         if vocab != None: self.vocab = vocab or []
         self.categories = categories if categories else []
@@ -1256,7 +1257,7 @@ class Seq2Seq:
                 near_distance = abs(near_position - index_cat)
                 if near_distance == 0:
                     near_distance = 10000
-                _alpha += 1.0 / (near_distance ** 0.5)
+                _alpha += 1.0 / (near_distance ** self.distance_temperature)
         return _alpha / (len(intersect_tokens) + 1)
 
     def alpha_minor_distance_position(self, position: List[int], ids: List[int]) -> int:
