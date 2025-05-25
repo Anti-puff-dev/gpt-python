@@ -367,6 +367,8 @@ class Classify:
         self.dropout = 0.0001
         self.classes_number = 3
         self.non_category_threshold = 0.05
+        self.distance_temperature = 1
+        
         self.categories = categories or []
         self.tensors = tensors or []
         if vocab != None: self.vocab = vocab or []
@@ -387,6 +389,10 @@ class Classify:
 
     def vocab(self, vocab: List[Vocab]):
         self.vocab = vocab
+        return self
+
+    def distance_temperature(self, distance_temperature):
+        self.distance_temperature = distance_temperature
         return self
 
     def model(self, model_path, read=False):
@@ -563,7 +569,7 @@ class Classify:
                         index = next((i for i, r in enumerate(results) if r['category'] == category), -1)
                         if index > -1:
                             results[index]['category_count'] += 1
-                            results[index]['weight'] += (t.weight > self.dropout and t.weight or 0) + ( results[index]['category_count'] + len(tokens))  # Simplified conditional
+                            results[index]['weight'] += (t.weight > self.dropout and t.weight or 0) + ( results[index]['category_count'] / len(tokens))  # Simplified conditional
                         else:
                             results.append({'category_id': t.category_id, 'category': category, 'weight': (t.weight > self.dropout and t.weight or 0), 'category_count': 1, 'input_token_count': len(tokens)})
 
