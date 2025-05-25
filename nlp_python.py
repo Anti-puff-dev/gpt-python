@@ -1066,6 +1066,10 @@ class Seq2Seq:
         self.vocab = vocab
         return self
 
+    def distance_temperature(self, distance_temperature):
+        self.distance_temperature = distance_temperature
+        return self
+
     def model(self, model_path: str, read: bool = False):
         self.model_path = model_path
         print(f"Model: {model_path} {os.path.exists(model_path)} {read}")
